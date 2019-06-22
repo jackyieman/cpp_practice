@@ -14,7 +14,7 @@ void writeRandomOutput(const char *outFileName, int lines, int elements) {
 
 	fstream file;
 	file.open(outFileName, ios::out | ios::trunc);
-	srand(time(NULL));
+	srand((unsigned)time(NULL));
 
 	if (file.is_open()) {
 		//write header

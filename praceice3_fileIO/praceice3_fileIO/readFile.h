@@ -5,8 +5,8 @@
 
 using namespace std;
 
-void readFile(const char *inputFileName, int **buffer);
-void readFile(const char *inputFileName, int **buffer) {
+void readFile(const char *inputFileName,  int **&buffer);
+void readFile(const char *inputFileName,  int **&buffer) {
 
 	fstream file;
 	file.open(inputFileName, ios::in);

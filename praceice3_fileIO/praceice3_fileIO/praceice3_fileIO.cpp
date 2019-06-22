@@ -4,7 +4,7 @@
 #include "randomFun.h"
 #include "readFile.h"
 
-void printBuffer(int **buffer, int lines, int elements) {
+void printBuffer(int **&buffer, int lines, int elements) {
 	cout << "\n";
 	for (int i = 0; i < lines; i++) {
 		for (int j = 0; j < elements; j++)
@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
 	else
 		outputFileName = argv[1];
 
+	//write test bench
 	cout << "start write file...\n";
 	writeRandomOutput(outputFileName, LINES, ELEMENTS);
 
@@ -36,9 +37,12 @@ int main(int argc, char *argv[])
 	int **buffer = new int*[LINES];
 	for (int i{ 0 }; i < LINES; i++)
 		buffer[i] = new int[ELEMENTS];
+	int **&bufferRef = buffer;
 
-	readFile(outputFileName, buffer);
-	printBuffer(buffer, LINES, ELEMENTS);
+	//do process
+	readFile(outputFileName, bufferRef);
+	printBuffer(bufferRef, LINES, ELEMENTS);
+
 
 	//release buffer
 	for (int i{ 0 }; i < LINES; i++)
