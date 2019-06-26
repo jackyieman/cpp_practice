@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "NeuralNetwork.h"
 
-
-
 NeuralNetwork::NeuralNetwork() :config(500, 0.05, 25, 5, 5){}
 NeuralNetwork::NeuralNetwork(const NN_CONFIG configRef) : config(configRef._learnRepeat, configRef._learnRate, configRef._inputNodes, configRef._hiddenNodes, configRef._outputNodes) {}
 NeuralNetwork::~NeuralNetwork(){}

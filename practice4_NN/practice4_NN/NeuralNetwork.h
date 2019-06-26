@@ -36,7 +36,7 @@ private:
 	vector< vector<double> > W_xh, W_hy, dW_xh, dW_hy;
 	vector<double> X, T, H, Y; //Y is predict data
 	vector<double> biasH, biasY, errorH, errorY, dBiasH, dBiasY;
-
+	
 	void readFileToBuffer(string fileName, vector<double> &output, int limit);
 
 public:
