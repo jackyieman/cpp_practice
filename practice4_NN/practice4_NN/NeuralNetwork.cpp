@@ -11,13 +11,13 @@ int NeuralNetwork::inputNodes() const { return config._inputNodes; }
 int NeuralNetwork::hiddenNodes() const { return config._hiddenNodes; }
 int NeuralNetwork::outputNodes() const { return config._outputNodes; }
 
-void NeuralNetwork::readFileToBuffer(string fileName, vector<double> &output, int limit) {
+void NeuralNetwork::readFileToBuffer(string fileName, vector<double> &output, int32_t limit) {
 	fstream file;
 	file.open(fileName, std::ios::in);
 
 	if (file.is_open()) {
 		double value{ 0.0 };
-		int counter{ 0 };
+		size_t counter{ 0 };
 		do {
 			if (counter >= limit)
 				break;
@@ -70,60 +70,60 @@ void NeuralNetwork::setValidData(string fileName) {
 void NeuralNetwork::runNN() {
 	beginTime = clock();
 
-	for (int iter = 0; iter < learnRepeat(); iter++) {
+	for (size_t iter = 0; iter < learnRepeat(); iter++) {
 		//input->hidden process
-		for (int h = 0; h < hiddenNodes(); h++) {
+		for (size_t h = 0; h < hiddenNodes(); h++) {
 			double sum = 0.0;
-			for (int i = 0; i < inputNodes(); i++)
+			for (size_t i = 0; i < inputNodes(); i++)
 				sum += X[i] * W_xh[i][h];
 			//apply activity function
 			H[h] = 1.0 / (1 + exp(-(sum - biasH[h])));
 		}
 
 		//hidden->output process
-		for (int j = 0; j < outputNodes(); j++) {
+		for (size_t j = 0; j < outputNodes(); j++) {
 			double sum = 0.0;
-			for (int h = 0; h < hiddenNodes(); h++)
+			for (size_t h = 0; h < hiddenNodes(); h++)
 				sum += H[h] * W_hy[h][j];
 			//apply activity function
 			Y[j] = 1.0 / (1 + exp(-(sum - biasY[j])));
 		}
 
 		//compute output layer error
-		for (int j = 0; j < outputNodes(); j++)
+		for (size_t j = 0; j < outputNodes(); j++)
 			errorY[j] = Y[j] * (1.0 - Y[j]) * (T[j] - Y[j]);
 
 		//compute hidden layer error
-		for (int h = 0; h < hiddenNodes(); h++) {
+		for (size_t h = 0; h < hiddenNodes(); h++) {
 			double sum = 0.0;
-			for (int j = 0; j < outputNodes(); j++)
+			for (size_t j = 0; j < outputNodes(); j++)
 				sum += W_hy[h][j] * errorY[j];
 			errorH[h] = H[h] * (1.0 - H[h]) * sum;
 		}
 
 		//compute delta Weight(H,J), delta BiasY
 		//delta Weight(X,H) and delta BiasH
-		for (int j = 0; j < outputNodes(); j++)
-			for (int h = 0; h < hiddenNodes(); h++)
+		for (size_t j = 0; j < outputNodes(); j++)
+			for (size_t h = 0; h < hiddenNodes(); h++)
 				dW_hy[h][j] = learnRate() * errorY[j] * H[h];
-		for (int j = 0; j < outputNodes(); j++)
+		for (size_t j = 0; j < outputNodes(); j++)
 			dBiasY[j] = -learnRate() * errorY[j];
-		for (int h = 0; h < hiddenNodes(); h++)
-			for (int i = 0; i < inputNodes(); i++)
+		for (size_t h = 0; h < hiddenNodes(); h++)
+			for (size_t i = 0; i < inputNodes(); i++)
 				dW_xh[i][h] = learnRate() * errorH[h] * X[i];
-		for (int h = 0; h < hiddenNodes(); h++)
+		for (size_t h = 0; h < hiddenNodes(); h++)
 			dBiasH[h] = -learnRate() * errorH[h];
 
 		//update Why, BiasY, Wxh and BiasH
-		for (int j = 0; j < outputNodes(); j++)
-			for (int h = 0; h < hiddenNodes(); h++)
+		for (size_t j = 0; j < outputNodes(); j++)
+			for (size_t h = 0; h < hiddenNodes(); h++)
 				W_hy[h][j] += dW_hy[h][j];
-		for (int j = 0; j < outputNodes(); j++)
+		for (size_t j = 0; j < outputNodes(); j++)
 			biasY[j] += dBiasY[j];
-		for (int h = 0; h < hiddenNodes(); h++)
-			for (int i = 0; i < inputNodes(); i++)
+		for (size_t h = 0; h < hiddenNodes(); h++)
+			for (size_t i = 0; i < inputNodes(); i++)
 				W_xh[i][h] += dW_xh[i][h];
-		for (int h = 0; h < hiddenNodes(); h++)
+		for (size_t h = 0; h < hiddenNodes(); h++)
 			biasH[h] += dBiasH[h];
 	}
 

@@ -21,7 +21,7 @@ typedef struct nnConfig {
 	const int _hiddenNodes;
 	const int _outputNodes;
 
-	nnConfig(int learnRepeat, double learnRate, int inputNodes, int hiddenNodes, int outputNodes) :
+	nnConfig(const int learnRepeat, const double learnRate, const int inputNodes, const int hiddenNodes, const int outputNodes) :
 		_learnRepeat(learnRepeat), _learnRate(learnRate), _inputNodes(inputNodes), _hiddenNodes(hiddenNodes), _outputNodes(outputNodes) {}
 }NN_CONFIG;
 
@@ -37,7 +37,7 @@ private:
 	vector<double> X, T, H, Y; //Y is predict data
 	vector<double> biasH, biasY, errorH, errorY, dBiasH, dBiasY;
 	
-	void readFileToBuffer(string fileName, vector<double> &output, int limit);
+	void readFileToBuffer(string fileName, vector<double> &output, int32_t limit);
 
 public:
 	NeuralNetwork();
